@@ -1,3 +1,3 @@
 # Scripts
 
-I am tired of adding function to my bashrc. Isn't it better to make a directory and dump all your scripts there ?
+I used to write functions at the bottom of my bashrc file. I have come to realize that it would be better to make a directory and write functions are individual files in that directory. It will be cleaner. 
