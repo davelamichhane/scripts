@@ -1,0 +1,9 @@
+#!/usr/bin/bash
+#To start a journal entry with date and template already copied to the clipboard
+#This depends on having a .current file on home dir linked to the journal file of current month
+
+printf "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n" > ~/.myjournals/newfile
+date >> ~/.myjournals/newfile
+cat ~/.myjournals/template >> ~/.myjournals/newfile
+xclip -i -selection clipboard ~/.myjournals/newfile
+vim ~/.current

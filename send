@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+#Add, commit, and push files to gitlab
+
+git add $1
+git commit -m "added $1"
+git push origin master
+git log --graph --oneline
