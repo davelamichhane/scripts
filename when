@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+# Get color coded info on when your arch system was last updated with a single command: when
+# This file should be executable and placed in you scripts directory
 
 #colors
 c1=$( tput setaf 196 )
