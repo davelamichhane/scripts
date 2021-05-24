@@ -1,0 +1,11 @@
+#!/usr/bin/bash
+
+#colors
+c1=$( tput setaf 196 )
+c2=$( tput setaf 21 )
+c3=$( tput setaf 28 )
+nc=$( tput setaf 255 )
+
+echo "Explicitely Installed Packages:      $c1$(pacman -Qe |wc -l)$nc"
+echo "Packages installed as dependencies:  $c2$(pacman -Qd |wc -l)$nc"
+echo "Total Packages installed:            $c3$(pacman -Q |wc -l)$nc"
