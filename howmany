@@ -8,7 +8,7 @@ c4=$( tput setaf 118 )
 c5=$( tput setaf 226 )
 nc=$( tput setaf 255 )
 
-last_installed=`\cat /var/log/pacman.log | grep installed |tail -1 | awk '{print $4}'`
+last_installed=`\cat /var/log/pacman.log | grep "Running 'pacman -S " |tail -1 | awk '{print $6}' | tr -d "'"`
 last_removed=`\cat /var/log/pacman.log | grep "Running 'pacman -R" |tail -1 | awk '{print $6}'| tr -d "'"`
 
 echo "Explicitely Installed Packages:      $c1$(pacman -Qe |wc -l)$nc"
