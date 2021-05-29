@@ -1,0 +1,20 @@
+#!/usr/bin/bash
+# Purpose: Make it easier to use macchanger
+# Process: Show the current MAC address or change to a random address if correct argument is supplied  (show or change)
+#          Curse like a nasty british dude if incorrect or no argument is supplied
+#          It's required to first turn the wireless interface down before changing the MAC address
+#          Enjoy!!
+
+wireless_interface=`iw dev | awk '$1=="Interface"{print $2}'`
+curse='What the fucking hell are you? You great-gangly-fuck-knuckle-twat. Greasy-head-cumbag. Fuck You!!'
+
+if [ $# -eq 0 ]; then
+  echo $curse
+elif [ $1 = "change" ]; then
+  sudo ip link set $wireless_interface down
+  sudo macchanger -br $wireless_interface
+  sudo ip link set $wireless_interface up
+elif [ $1 = "show" ]; then
+  macchanger -s $wireless_interface
+else echo $curse
+fi
