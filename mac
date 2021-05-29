@@ -6,15 +6,15 @@
 #          Enjoy!!
 
 wireless_interface=`iw dev | awk '$1=="Interface"{print $2}'`
-curse='What the fucking hell are you? You great-gangly-fuck-knuckle-twat. Greasy-head-cumbag. Fuck You!!'
+curse='What the fucking hell are you?\nYou great-gangly-fuck-knuckle-twat.\nGreasy-head-cumbag.\nFuck You!!\n'
 
 if [ $# -eq 0 ]; then
-  echo $curse
+  printf "$curse"
 elif [ $1 = "change" ]; then
   sudo ip link set $wireless_interface down
   sudo macchanger -br $wireless_interface
   sudo ip link set $wireless_interface up
 elif [ $1 = "show" ]; then
   macchanger -s $wireless_interface
-else echo $curse
+else printf "$curse"
 fi
