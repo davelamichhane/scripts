@@ -3,7 +3,9 @@
 # Process: Show the current MAC address or change to a random address if correct argument is supplied  (show or change)
 #          Curse like a nasty british dude if incorrect or no argument is supplied
 #          It's required to first turn the wireless interface down before changing the MAC address
-#          Enjoy!!
+# Note:    NetworkManager will reset your spoofing attempt everytime it connects to a network. Therefore this is only
+#          a temporary way to spoof. I have set NetworkManager's native MAC randomization so that everytime i connect
+#          to a network, i get a random MAC address. Look up NetworkManager on Arch Wiki and search for MAC randomization.
 
 wireless_interface=`iw dev | awk '$1=="Interface"{print $2}'`
 curse='What the fucking hell are you?\nYou great-gangly-fuck-knuckle-twat.\nGreasy-head-cumbag.\nFuck You!!\n'
