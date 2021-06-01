@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+# Purpose: Update packages installed with AUR.
+# Process: Go into each directory, perform git pull, perform makepkg and climb back up
+#          Save the date of update for reference
+
+for aur in `\ls ~/AUR`
+do cd ~/AUR/$aur
+git pull 1> /tmp/smokinghot.xxx
+i=`cat /tmp/smokinghot.xxx | awk '{ print $0 }'`
+echo 'Hello!!' > /tmp/smokinghot.xxx
+if [ "$i" = "Already up to date." ]
+then continue
+else makepkg -sirc --noconfirm
+  echo "$aur    $( date )" >> .aur_update_dates.log
+fi
+done
