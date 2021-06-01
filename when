@@ -6,7 +6,7 @@
 c1=$( tput setaf 196 )
 c2=$( tput setaf 21 )
 c3=$( tput setaf 28 )
-nc=$( tput setaf 255 )
+nc=$( tput sgr0 )
 
 #dates
 d1=`grep Syu /var/log/pacman.log | tail -1 | awk '{ print $1 }' | tr -d '[]'`
