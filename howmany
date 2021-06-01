@@ -6,7 +6,7 @@ c2=$( tput setaf 21 )
 c3=$( tput setaf 28 )
 c4=$( tput setaf 118 )
 c5=$( tput setaf 226 )
-nc=$( tput setaf 255 )
+nc=$( tput sgr0 )
 
 last_installed=`grep "Running 'pacman -S " /var/log/pacman.log |tail -1 | awk '{print $6}' | tr -d "'"`
 d1=`grep "Running 'pacman -S " /var/log/pacman.log |tail -1 | awk '{print $1}' | tr -d "[]"`
@@ -19,7 +19,8 @@ d5=`date -d"$d4" +'%A %b %d'`
 d6=`date -d"$d4" +'%I:%M %p'`
 
 echo "Explicitely Installed Packages:      $c1$(pacman -Qe |wc -l)$nc"
-echo "Packages installed as dependencies:  $c2$(pacman -Qd |wc -l)$nc"
-echo "Total Packages installed:            $c3$(pacman -Q |wc -l)$nc"
+echo "Packages Installed as Dependencies:  $c2$(pacman -Qd |wc -l)$nc"
+echo "Total:                               $c3$(pacman -Q |wc -l)$nc"
+echo "Packages installed from the AUR:     $c1$(\ls ~/AUR | wc -l)$nc"
 echo "Last package explicitely installed:  $c4$last_installed$nc => Installed on $d2 at $d3"
 echo "Last package explicitely removed:    $c5$last_removed$nc => Removed on $d5 at $d6"
