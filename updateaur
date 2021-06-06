@@ -9,8 +9,8 @@ git pull 1> /tmp/smokinghot.xxx
 i=`cat /tmp/smokinghot.xxx | awk '{ print $0 }'`
 echo 'Hello!!' > /tmp/smokinghot.xxx
 if [ "$i" = "Already up to date." ]
-then  echo "$aur was up to date on $( date )" >> ~/.aur_update_dates && continue
+then  continue
 else makepkg -sirc --noconfirm
-  echo "$aur was updated on  $( date )" >> ~/.aur_update_dates.log
+  echo "$aur was successfully updated on $( date +'%b %d' ) at $( date +'%I:%M %p' )" >> ~/.aur_update_dates.log
 fi
 done
