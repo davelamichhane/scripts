@@ -3,5 +3,5 @@
 
 git add $1
 git commit -m "added $1"
-git push origin master
+git push origin main
 git log --graph --oneline
