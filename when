@@ -22,6 +22,6 @@ rem=$(( rem - hours * 3600))
 minutes=$(( rem / 60 ))
 seconds=$(( rem - minutes  * 60 ))
 
-echo "Your machine was last updated on $c1$(date -d"$d1" +'%A %b %d')$nc at$c1 $(date -d"$d1" +'%I:%M %p')$nc!"
+echo "Packages were last updated on $c1$(date -d"$d1" +'%A %b %d')$nc at$c1 $(date -d"$d1" +'%I:%M %p')$nc!"
 echo "It has been $c2$days days, $hours hours, $minutes minutes and $seconds$nc seconds since then!!"
-echo "Please remember to update your Arch Linux$c3 every week!!$nc"
+echo "Please remember to update packages$c3 every week$nc to keep arch running smoothly!!"
