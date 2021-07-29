@@ -1,0 +1,111 @@
+#!/usr/bin/node
+// Purpose: document daily health/diet info on a json file
+// Process: read monthly json file, extract object, append a new object with daily info, write out new json file
+
+const fs = require("fs");
+const path = require("path");
+const readline = require("readline");
+
+// Date/Time
+let dateUTC = new Date();
+const time = dateUTC.toLocaleTimeString("en-US", { hour12: false });
+const hour = parseInt(time.split(":")[0]);
+// This is to allow me to post past midnight
+// Actually all the way up to 8 PM next day. Anything after 8 PM will be for that day
+if (hour < 20) {
+  dateUTC = new Date(dateUTC.getTime() - 24 * 60 * 60 * 1000);
+}
+
+const year = parseInt(dateUTC.toLocaleString("en-US", { year: "numeric" }));
+const month = dateUTC.toLocaleString("en-US", { month: "short" }).toUpperCase();
+let date = parseInt(dateUTC.toLocaleString("en-US", { day: "numeric" }));
+const day = dateUTC.toLocaleString("en-US", { weekday: "long" });
+
+// Folders, File, Path
+const baseDir = "/home/dave/.personal/journals";
+const folderName = month.concat(year);
+const folderPath = path.resolve(baseDir, folderName);
+const fileName = folderName.concat("_health.json");
+const filePath = path.resolve(baseDir, folderName, fileName);
+
+// appropriate folder and file do not exist, create them
+if (!fs.existsSync(folderPath)) {
+  fs.mkdirSync(folderPath);
+}
+if (!fs.existsSync(filePath)) {
+  fs.writeFileSync(filePath, "{}");
+}
+
+// JS object where input will be stored. Later this will be converted to JSON and written to file
+const obj = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+obj[date] = {
+  Year: year,
+  Month: month,
+  Date: date,
+  Day: day,
+};
+
+// Object containing the legend/info about input
+const legend = {
+  Location: ["Location? neighborhood, city, country:\n", "array"],
+  Weather: ["How's the weather?\n", "array"],
+  WakeUp: ["When did you get up this morning? '07:00 AM' format\n", "string"],
+  Pulse: ["What was your heart rate in BPM?\n", "number"],
+  BodyTemperature: ["Body temp in Fahrenheit?\n", "number"],
+  HoursSlept: ["How many hours did you sleep? Take a guess!\n", "number"],
+  PhysicalWellbeing: ["How do you feel about your physical well-being?\n10=Perfect, 1=Shit. Add short note explaining your situation eg 'normal' or 'lack of energy'.\n", "array"],
+  EmotionalWellbeing: ["How do you feel about your emotional well-being?\n10=Perfect, 1=Shit. Add short note explaining your situation eg 'felt optimistic' or 'felt depressed'.\n", "array"],
+  PreExistingCondition: ["Do you have any pre-existing conditon (true/false)?\nHow intense (1=very mild, 10=Shoot me in the head)? Add a short note as well!\nEg 'Toothache, 2, Starting to feel better'. If more than once, mention in NOTES section at the end.\n", "array"],
+  Exercise: ["Did you workout today? Eg pushups,100,walk,6.\nWalking/running lengths = KM, put 1 unit of an average stretching session.\n", "object"],
+  Fasting: ["Did you fast today (true/false)? What kind (wet/dry soft/dry hard)? How many hours?\nEg true, dry soft, 16 or false, null, null.\n", "array"],
+  Food: ["What did you eat today ? format: unit unit-type food prep-type.\nEg: 1 unit apple raw, 2 mugs coffee unsweetned.\n", "array"],
+  Water: ["How much water did you drink today? unit = milliliters\n", "number"],
+  Sugar: ["Sugar?\n0 = absolutely no sugar, 1 = several cups of tea/coffee with sugar, 2=sweet beverages + snacks, 3=beverages, snacks and desserts, 4=chugged syrup.\n", "number"],
+  Alcohol: ["Approximate alcohol consumed in terms of beer.\nFor reference: 1 beer = 12oz or 340ml at 4.5% alcohol. Therefore 1 beer = 15ml or 0.5oz. Keep notes, do Math!\n", "number"],
+  Nicotine: ["Enter number of cigarettes smoked.\n", "number"],
+  Urination: ["Enter number of urinations followed by description.\nEg: 5, normal or 3, mild burning sensation.\n", "array"],
+  Defecation: ["Enter number of bowel movements followed by short description.\nEg: 2, normal or 6, massive diarohhea.\n", "array"],
+  Ejaculation: ["Enter number of ejaculations followed by a short descriptions.\nEg: 2, normal or 3, blood and pus!!\n", "array"],
+  Notes: ["Anything else? Seperate ideas by commas to be sotored in array as strings.\n", "array"],
+};
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+
+const func = (prompt) => {
+  return new Promise((resolve, reject) => {
+    rl.question(prompt, (input) => {
+      resolve(input);
+    });
+  });
+};
+
+const main = async () => {
+  for (let i in legend) {
+    let ans = await func(legend[i][0]);
+    let tempArr = ans
+      .split(",")
+      .map((item) => item.trim())
+      .map((item) => (item == "true" ? true : item == "false" ? false : item == "null" ? null : Number(item) >= 0 ? Number(item) : item));
+    if (legend[i][1] === "array") {
+      obj[date][i] = tempArr;
+    } else if (legend[i][1] === "object") {
+      let tempObj = {};
+      for (let i = 0; i < tempArr.length; i = i + 2) {
+        tempObj[tempArr[i]] = tempArr[i + 1];
+      }
+      obj[date][i] = tempObj;
+    } else if (legend[i][1] == "number") {
+      obj[date][i] == Number(ans);
+    } else {
+      obj[date][i] = ans;
+    }
+  }
+  rl.close();
+  console.log(obj);
+  const data = JSON.stringify(obj, null, 2);
+  fs.writeFileSync(filePath, data);
+};
+main();
