@@ -9,6 +9,7 @@
 //          Keys come from the Legent object and values are entered by user
 //          Once done adding values, save the object, stringify it and write over the json file with this updated object.
 //          Every month will have one json file, therefore every json file should have about 30 objects containing health/diet info
+//          See JUL2021_health.json file to see how your info appears
 
 const fs = require("fs");
 const path = require("path");
