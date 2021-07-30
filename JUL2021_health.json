@@ -1,0 +1,89 @@
+{
+ "29": {
+    "Year": 2021,
+    "Month": "JUL",
+    "Date": 29,
+    "Day": "Thursday",
+    "Location": [
+      "Good Vibes Hostel",
+      "Hoi An",
+      "Vietnam"
+    ],
+    "Weather": [
+      "warm",
+      "sunny",
+      "isolated showers"
+    ],
+    "WakeUp": "08:30 AM",
+    "PhysicalWellbeing": [
+      8,
+      "energetic",
+      "relaxed body"
+    ],
+    "EmotionalWellbeing": [
+      9,
+      "happy",
+      "excited about the trip"
+    ],
+    "PreExistingCondition": [
+      "sore left ankle",
+      3,
+      "getting better"
+    ],
+    "Exercise": {
+      "pushups": 100,
+      "running": 6,
+      "stretching": 1,
+      "plank": 5,
+      "pullups": 40
+    },
+    "LastMealYesterday": "08:00 PM",
+    "FirstMealToday": "12:30 PM",
+    "Fasting": [
+      true,
+      "dry soft",
+      16.5
+    ],
+    "Food": [
+      "1 unit lemon raw",
+      "3 cups coffee black/unsweetned",
+      "2 unit eggs fried",
+      "1 plate noodles fried/chicken",
+      "2 unit bananas raw",
+      "1 unit dragonfruit raw",
+      "1 bowl mixed-nuts raw",
+      "1 unit hamburger bacon",
+      "1 plate fries ketchup"
+    ],
+    "Urination": [
+      5,
+      "normal"
+    ],
+    "Defecation": [
+      2,
+      "normal"
+    ],
+    "Ejaculation": [
+      2,
+      "normal"
+    ],
+    "Reading": [
+      true,
+      30,
+      "Thus Spoke Zarathustra",
+      "still trying to like it"
+    ],
+    "DentalHealth": [
+      "brush/morning",
+      "post meal water swishing",
+      "brush/evening",
+      "flossing",
+      "oil pulling with coconut oil"
+    ],
+    "Notes": [
+      "Pretty normal day",
+      "Vietnam",
+      "not much to add"
+    ]
+  }
+}
