@@ -66,6 +66,7 @@ const legend = {
   EmotionalWellbeing: ["How do you feel about your emotional well-being?\n10=Perfect, 1=Shit. Add short note explaining your situation eg 'felt optimistic' or 'felt depressed'.\n", "array"],
   PreExistingCondition: ["Do you have any pre-existing conditon (true/false)?\nHow intense (1=very mild, 10=Shoot me in the head)? Add a short note as well!\nEg 'Toothache, 2, Starting to feel better'. If more than once, mention in NOTES section at the end.\n", "array"],
   Exercise: ["Did you workout today? Eg pushups,100,walk,6.\nWalking/running lengths = KM, put 1 unit of an average stretching session.\n", "object"],
+  Meditation: ["Did you meditate (true/false)? Duration in minutes, additional info\n", "array"],
   LastMealYesterday: ["When did you finish eating/drinking your last meal yesterday? '08:30 PM' format\n", "string"],
   FirstMealToday: ["When did you break your fast today? '12:30 PM' format\n", "string"],
   Fasting: ["Did you fast for more than 8 hours since dinner yesterday (true/false)? What kind (wet/dry soft/dry hard)? How many hours?\nEg true, dry soft, 16 or false, null, null.\n", "array"],
@@ -77,7 +78,7 @@ const legend = {
   Urination: ["Enter number of urinations followed by description.\nEg: 5, normal or 3, mild burning sensation.\n", "array"],
   Defecation: ["Enter number of bowel movements followed by short description.\nEg: 2, normal or 6, massive diarohhea.\n", "array"],
   Ejaculation: ["Enter number of ejaculations followed by a short descriptions.\nEg: 2, normal or 7, blood and pus!!\n", "array"],
-  Reading: ["Did you read anything today? true/false, duration, description\n", "array"],
+  Reading: ["Did you read anything today? true/false, duration in minutes, description\n", "array"],
   DentalHealth: ["What all did you do to your teeth/mouth today?\n", "array"],
   Notes: ["Anything else? Seperate ideas by commas to be sotored in array as strings.\n", "array"],
 };
@@ -111,7 +112,7 @@ const main = async () => {
       }
       obj[date][i] = tempObj;
     } else if (legend[i][1] == "number") {
-      obj[date][i] == Number(ans);
+      obj[date][i] = Number(ans);
     } else {
       obj[date][i] = ans;
     }
