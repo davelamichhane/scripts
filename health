@@ -77,7 +77,7 @@ const legend = {
   Defecation: ["Enter number of bowel movements followed by short description.\nEg: 2, normal or 6, massive diarohhea.\n", "array"],
   Ejaculation: ["Enter number of ejaculations followed by a short descriptions.\nEg: 2, normal or 7, blood and pus!!\n", "array"],
   Reading: ["Did you read anything today? true/false, duration, description\n", "array"],
-  DentalHealth: ["What all did you do to your teeth/mouth today?", "array"],
+  DentalHealth: ["What all did you do to your teeth/mouth today?\n", "array"],
   Notes: ["Anything else? Seperate ideas by commas to be sotored in array as strings.\n", "array"],
 };
 
