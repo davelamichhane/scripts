@@ -80,6 +80,7 @@ const legend = {
   Ejaculation: ["Enter number of ejaculations followed by a short descriptions.\nEg: 2, normal or 7, blood and pus!!\n", "array"],
   Reading: ["Did you read anything today? true/false, duration in minutes, description\n", "array"],
   DentalHealth: ["What all did you do to your teeth/mouth today?\n", "array"],
+  Body: ["Any cleaning/application to body/hair?", "object"],
   Notes: ["Anything else? Seperate ideas by commas to be sotored in array as strings.\n", "array"],
 };
 
