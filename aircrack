@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# comment
+
+sudo airmon-ng start wlp1s0 && sudo airodump-ng wlp1s0mon
