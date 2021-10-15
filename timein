@@ -1,0 +1,15 @@
+#!/bin/bash
+
+nc=$( tput sgr0 )
+c1=$( tput setaf 196 )
+c2=$( tput setaf 21 )
+
+
+if [ $( timedatectl list-timezones | grep -ic $1 ) = 0 ]
+then
+  echo "No such timezone found!"
+else
+  string=$(timedatectl list-timezones | grep -i $1 | head -1)
+ t=$( TZ=$string date '+%A %I:%M %p')
+echo  "Current time/date in $c1$string$nc: $c2$t$nc "
+fi
