@@ -4,6 +4,6 @@
 # #willsee
 
 gpg -d -o /tmp/tempfile ~/.personal/list.gpg
-grep -i $1 /tmp/tempfile | awk '{print $2}' | xclip -selection clipboard -l 1
+grep -i $1 /tmp/tempfile | awk '{print $2}' | xclip -selection clipboard
 rm /tmp/tempfile
 

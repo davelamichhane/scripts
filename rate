@@ -4,24 +4,24 @@
 # To calculate the rate at which my battery is discharging
 # Takes a single parameter which is the period (in minutes)  you take into account while calculating the battery discharge
 
-first=` sudo tlp-stat | grep [%] | head -1 | awk '{print $3}' `
+first=` sudo tlp-stat | grep Charge | head -1 | awk '{print $3}' `
 sleep ` bc <<< "scale=2; $1 * 60" `
-second=` sudo tlp-stat | grep [%] | head -1 | awk '{print $3}' `
+second=` sudo tlp-stat | grep Charge | head -1 | awk '{print $3}' `
 diff=` bc <<< "scale=2; $first - $second" `
 state=`bc <<< "scale=2; if( $diff > 0 ) print \"discharging\" else print \"charging\" "`
 rate=`bc <<< "scale=2; if( $diff > 0 ) print $diff/$1 else print -1 * $diff/$1" `
 message="Your battery is $state @ $rate% per minute.\n It went from $first% to $second% in $1 minutes"
 
 #uncomment to cat out the output
-#echo -e $message
+echo -e $message
 
 #uncomment to send desktop notification
 #hover over the notification to read full message
-notify-send "Battery Information!" "$message"
+#notify-send "Battery Information!" "$message"
+
 
 #uncomment to write to a file
 #echo -e $message > /tmp/mybattery.isdying
 
 #uncomment to send the content of that file in an email using mutt
 #mutt -s "Battery Information!" yourfakeemailaddress@sketchywebsite.com < /tmp/mybattery.isdying
-
