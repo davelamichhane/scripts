@@ -1,0 +1,75 @@
+#!/usr/bin/node
+
+// This programs depends on ~/home/dave/.personal/smoke folder with count file and log folder in it
+// This program will keep track of number of cigarettes smoked since INSERT DATE HERE (saved as initialTime in this program)
+// I am allowed to smoke 6 cigarettes for 31 days a year. Comes out to about 0.509 cigarettes per day
+// I am not allowed to smoke cigarettes in advance
+
+const fs = require("fs");
+
+// colors
+function colorize(color, output) {
+  return ["\033[", color, "m", output, "\033[0m"].join("");
+}
+const smokedSoFarColor = 91;
+const numDaysSinceInitColor = 92;
+const numberLeftColor = 95;
+
+// Names of month because JS dates kinda suck ass!
+const monthArray = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
+
+// Generate filename for log files in the form /home/dave/.personal/smoke/log/DEC2021.log
+const countPath = "/home/dave/.personal/smoke/count";
+const logPath = "/home/dave/.personal/smoke/log/";
+const monthlyLogFileName =
+  logPath +
+  monthArray[new Date().getMonth()]
+    .concat(new Date().getFullYear())
+    .concat(".log");
+
+// Times in milliseconds since the epoch, Days, Dates etc
+const initialTime = 1638947266469;
+const currentTime = new Date();
+const numDaysSinceInit =
+  (currentTime.getTime() - initialTime) / (1000 * 60 * 60 * 24);
+
+// How many have i smoked since starting this regimen ?
+// Read from a file and overwrite that file with a new number
+let smokedSoFar = Number(fs.readFileSync(countPath, "utf8"));
+const numberSmoked = process.argv[2] > 0 ? Number(process.argv[2]) : 0;
+
+if (numberSmoked > 0) {
+  smokedSoFar += numberSmoked;
+  fs.writeFileSync(countPath, String(smokedSoFar));
+  fs.writeFileSync(
+    monthlyLogFileName,
+    `Smoked ${numberSmoked} cigarettes on ${currentTime.toString()}\r\n`,
+    { flag: "a" }
+  );
+}
+
+const numberLeft = Math.floor((numDaysSinceInit * 186) / 365.25 - smokedSoFar);
+
+process.stdout.write(`---------------------------------------------
+You have smoked ${colorize(
+  smokedSoFarColor,
+  smokedSoFar
+)} cigarettes in ${colorize(
+  numDaysSinceInitColor,
+  Math.floor(numDaysSinceInit)
+)} days
+You have ${colorize(numberLeftColor, numberLeft)} cigarettes left!!
+---------------------------------------------\n`);

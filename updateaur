@@ -3,8 +3,8 @@
 # Process: Go into each directory, perform git pull, perform makepkg and climb back up
 #          Save the date of update for reference
 
-for aur in `\ls ~/AUR`
-do cd ~/AUR/$aur
+for aur in `\ls ~/Documents/AUR`
+do cd ~/Documents/AUR/$aur
 git pull 1> /tmp/smokinghot.xxx
 i=`cat /tmp/smokinghot.xxx | awk '{ print $0 }'`
 echo 'Hello!!' > /tmp/smokinghot.xxx

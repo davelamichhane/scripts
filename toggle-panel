@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cur=$(xfconf-query -c xfce4-panel -p /panels/panel-1/autohide-behavior)
+if [[ cur -eq 0 ]]; then
+  nxt=2
+else
+  nxt=0
+fi
+xfconf-query -c xfce4-panel -p /panels/panel-1/autohide-behavior -s $nxt
