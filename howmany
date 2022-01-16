@@ -21,6 +21,6 @@ d6=`date -d"$d4" +'%I:%M %p'`
 echo "Explicitely Installed Packages:      $c1$(pacman -Qe |wc -l)$nc"
 echo "Packages Installed as Dependencies:  $c2$(pacman -Qd |wc -l)$nc"
 echo "Total:                               $c3$(pacman -Q |wc -l)$nc"
-echo "Packages installed from the AUR:     $c1$(\ls ~/AUR | wc -l)$nc"
+echo "Packages installed from the AUR:     $c1$(\ls ~/Documents/AUR | wc -l)$nc"
 echo "Last package explicitely installed:  $c4$last_installed$nc => Installed on $d2 at $d3"
 echo "Last package explicitely removed:    $c5$last_removed$nc => Removed on $d5 at $d6"
