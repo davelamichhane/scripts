@@ -1,13 +1,9 @@
 #!/usr/bin/node
 
-// This programs depends on ~/home/dave/.personal/smoke folder with count file and log folder in it
-// This program will keep track of number of cigarettes smoked since INSERT DATE HERE (saved as initialTime in this program)
-// I am allowed to smoke 6 cigarettes for 31 days a year. Comes out to about 0.509 cigarettes per day
-// I am not allowed to smoke cigarettes in advance
-
 const fs = require("fs");
+const readline = require("readline");
 
-// colors
+// coloring function and colors --Optional
 function colorize(color, output) {
   return ["\033[", color, "m", output, "\033[0m"].join("");
 }
@@ -15,33 +11,17 @@ const smokedSoFarColor = 91;
 const numDaysSinceInitColor = 92;
 const numberLeftColor = 95;
 
-// Names of month because JS dates kinda suck ass!
-const monthArray = [
-  "JAN",
-  "FEB",
-  "MAR",
-  "APR",
-  "MAY",
-  "JUN",
-  "JUL",
-  "AUG",
-  "SEP",
-  "OCT",
-  "NOV",
-  "DEC",
-];
-
-// Generate filename for log files in the form /home/dave/.personal/smoke/log/DEC2021.log
+// prettier-ignore
+const monthArray = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 const countPath = "/home/dave/.personal/smoke/count";
 const logPath = "/home/dave/.personal/smoke/log/";
-const monthlyLogFileName =
-  logPath +
-  monthArray[new Date().getMonth()]
-    .concat(new Date().getFullYear())
-    .concat(".log");
+const monthYear = monthArray[new Date().getMonth()].concat(
+  new Date().getFullYear()
+);
+const monthlyLogFileName = logPath + monthYear + ".log";
 
 // Times in milliseconds since the epoch, Days, Dates etc
-const initialTime = 1638947266469;
+const initialTime = 1642335300000;
 const currentTime = new Date();
 const numDaysSinceInit =
   (currentTime.getTime() - initialTime) / (1000 * 60 * 60 * 24);
@@ -51,25 +31,46 @@ const numDaysSinceInit =
 let smokedSoFar = Number(fs.readFileSync(countPath, "utf8"));
 const numberSmoked = process.argv[2] > 0 ? Number(process.argv[2]) : 0;
 
-if (numberSmoked > 0) {
-  smokedSoFar += numberSmoked;
-  fs.writeFileSync(countPath, String(smokedSoFar));
-  fs.writeFileSync(
-    monthlyLogFileName,
-    `Smoked ${numberSmoked} cigarettes on ${currentTime.toString()}\r\n`,
-    { flag: "a" }
-  );
-}
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+const query = `Do you want to confirm having smoked ${numberSmoked} cigarettes? [Y/n] `;
 
-const numberLeft = Math.floor((numDaysSinceInit * 186) / 365.25 - smokedSoFar);
+rl.question(query, function (answer) {
+  if (["Y", "y", "yes", "Yes", ""].includes(answer)) {
+    if (numberSmoked) {
+      smokedSoFar += numberSmoked;
+      fs.writeFileSync(countPath, String(smokedSoFar));
+      fs.writeFileSync(
+        monthlyLogFileName,
+        `Smoked ${numberSmoked} cigarettes on ${currentTime.toString()}\r\n`,
+        { flag: "a" }
+      );
+    }
+    const numberLeft = Math.floor(
+      (numDaysSinceInit * 186) / 365.25 - smokedSoFar
+    );
 
-process.stdout.write(`---------------------------------------------
-You have smoked ${colorize(
-  smokedSoFarColor,
-  smokedSoFar
-)} cigarettes in ${colorize(
-  numDaysSinceInitColor,
-  Math.floor(numDaysSinceInit)
-)} days
-You have ${colorize(numberLeftColor, numberLeft)} cigarettes left!!
+    // This is just for readibility
+    // prettier-ignore
+    const colorizedSmokedSoFar = colorize(smokedSoFarColor, smokedSoFar)
+    //prettier-ignore
+    const colorizedNumDaysSinceInit = colorize(numDaysSinceInitColor, Math.floor(numDaysSinceInit))
+    // prettier-ignore
+    const colorizedNumberLeft = colorize(numberLeftColor, numberLeft)
+
+    process.stdout.write(`---------------------------------------------
+You have smoked ${colorizedSmokedSoFar} cigarettes in ${colorizedNumDaysSinceInit} days
+You have ${colorizedNumberLeft} cigarettes left!!
 ---------------------------------------------\n`);
+    rl.close();
+  } else {
+    process.stdout.write("Good bye!\n");
+    rl.close();
+  }
+});
+
+rl.on("close", function () {
+  process.exit(0);
+});
