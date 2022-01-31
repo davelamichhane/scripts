@@ -1,0 +1,4 @@
+#!/bin/bash
+
+profile="/etc/openvpn/client/$1-free-$2.protonvpn.com.udp.ovpn"
+sudo openvpn $profile
