@@ -1,0 +1,14 @@
+#!/usr/bin/node
+
+// Add digits of a number
+let str = process.argv[2]
+if (isNaN(Number(str))) {
+    process.stdout.write('Invalid Input!' + "\n")
+    return
+}
+
+let ans = str.split('').reduce((acc, cur) => acc + Number(cur), 0)
+process.stdout.write(ans + "\n")
+return
+
+
