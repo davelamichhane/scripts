@@ -1,0 +1,30 @@
+#!/usr/bin/node
+
+const n = process.argv[2]
+function partition(num) {
+    const short = Math.ceil(num / 9)
+    const temp = []
+    for (let i = short; i <= num; i++) {
+        func(num, i)
+    }
+
+    function func(num, len, prev = '') {
+        if (len === 1) {
+            let str = `${prev}${num}`
+            if (str[0] !== '0') temp.push(str)
+            return
+        }
+
+        const natural = Math.ceil(num / 9)
+        const min = len > natural ? 0 : num % 9 || 9
+        const max = num < 9 ? num : 10
+
+        for (let j = min; j < max; j++) {
+            func(num - j, len - 1, `${prev}${j}`)
+        }
+
+    }
+    console.dir(temp, {'maxArrayLength': null})
+}
+
+partition(n)
