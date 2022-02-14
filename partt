@@ -1,0 +1,61 @@
+#!/usr/bin/node
+
+const arr = [1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+const n = process.argv[2]
+
+function find(num) {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] > num) {
+            return i - 1
+        }
+    }
+}
+
+function fuckme(num) {
+    const temp = []
+    let ass = ''
+    butthole(num)
+    for (let r = temp.length - 1; r >= 0; r--) {
+        ass = `${ass}${String(temp[r][0] + 1).repeat(temp[r][1])}`
+
+    }
+    return ass
+    // function declaration
+    function butthole(num) {
+        if (num === 0) return
+        const first = find(num)
+        const freq = Math.floor(num / arr[first])
+        temp.push([first, freq])
+        butthole(num - freq * arr[first])
+    }
+}
+
+function partition(num) {
+    const short = Math.ceil(num / 9)
+    const temp = []
+    for (let i = short; i <= num; i++) {
+        func(num, i)
+    }
+
+    function func(num, len, prev = '') {
+        if (len === 1) {
+            let str = `${prev}${num}`
+            if (str[0] !== '0') {
+                let num = Number(str)
+                temp.push(fuckme(num))
+            }
+        }
+
+        const natural = Math.ceil(num / 9)
+        const min = len > natural ? 0 : num % 9 || 9
+        const max = num < 9 ? num : 10
+
+        for (let j = min; j < max; j++) {
+            func(num - j, len - 1, `${prev}${j}`)
+        }
+
+    }
+    console.dir(temp, {'maxArrayLength': null})
+}
+
+partition(n)
