@@ -1,0 +1,24 @@
+#!/usr/bin/bash
+# $1: string, $2: integer
+# if $2 = 0, return $1
+# else hash1 = sha3-512sum of $1 minus the space+hypen+new_line
+# hash2 = sha3-512sum of hash1 minus the space+hypen+new_line
+# repeat this process $2 times 
+# return the final hash minus the space+hyphen+new_line
+# Note: if you want the final hash to be of certain length, pipe the output to a 'cut -c 1-x' command where x is the desired length
+# Eg: clear cat 2 | cut -c 1-25 will output c6a0a1062c7a9ace342aa26eb
+
+sha(){
+        str=$1
+        num=$2
+        if [ "$num" -eq 0 ]; then
+
+            echo $str
+          else
+            str=$(echo -n $str | sha3-512sum | awk '{printf $1}')
+            ((num=num-1))
+            sha $str $num $len
+        fi
+    }
+
+    sha $1 $2

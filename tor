@@ -2,6 +2,6 @@
 # Purpose: Launch the tor browser
 # Process: Call the script for launching the tor browser ;)
 
-cd ~/Documents/tor/tor-browser_en-US
+cd ~/Documents/tor-browser_en-US
 ./start-tor-browser.desktop
 exit

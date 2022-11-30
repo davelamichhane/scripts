@@ -1,0 +1,19 @@
+#!/usr/bin/node
+
+let timeZones = [
+  ["Asia/Katmandu", "Kathmandu"],
+  ["Asia/Bangkok", "Bangkok"],
+  ["America/Mexico_City", "Mexico City"],
+  ["America/Vancouver", "Vancouver"],
+  ["Asia/Dubai", "Abu Dhabi"],
+  ["America/Chicago", "Baton Rouge"],
+  ["America/New_York", "East Coast"]
+]
+
+var options = { hour:'numeric', minute:'numeric'};
+
+for(tz of timeZones ){
+  options.timeZone = tz[0]
+  let city = tz[1]
+console.log(`Current time in ${city} is ${new Date().toLocaleString('en-US', options)}`)
+}
