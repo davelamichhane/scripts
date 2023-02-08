@@ -1,9 +1,0 @@
-#!/usr/bin/bash
-# Copy passwords from an encrypted file to clipboard
-# Possibly a security risk putting this file on gitlab
-# #willsee
-
-gpg -d -o /tmp/tempfile ~/.personal/list.gpg
-grep -i $1 /tmp/tempfile | awk '{print $2}' | xclip -selection clipboard
-rm /tmp/tempfile
-
