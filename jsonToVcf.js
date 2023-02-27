@@ -1,9 +1,11 @@
 /**
  * Save your contacts in a json file in this format
  * [
- * {"name":"Jack Barker", "phone":"+1225578"}
+ * {"name":"Jack Barker", "phone":"+1225578"},
+ * {"name":"Shadynasty Williams", "phone":"+977900000000"}
  * ]
- *
+ * and this script will change your json file to a vcf file that you can import to your android device.
+ * No need to store contacts on google!
  */
 const fs = require("fs");
 
