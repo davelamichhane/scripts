@@ -1,0 +1,28 @@
+#!/usr/bin/node
+
+// This program will convert your vcard file to a json
+
+const fs = require('fs')
+const [input, output] = process.argv.slice(2)
+
+fs.readFile(input, 'utf8', (err, data) => {
+  if (err) {
+    console.log(err)
+  } else {
+    let arr = data.split('END:VCARD')
+      .map(str => str.split('\r\n')
+        .filter(str => str !== "" && str[0] !== "B" && str[0] !== "V" && str[0] !== "N")
+      )
+      .filter(arr => arr.length >= 2)
+
+    let final = arr.map((sub, index) => {
+      let name = sub[0].split(':')[1]
+      let number = sub[1].split(':')[1]
+      return { name, number }
+    })
+
+    fs.writeFile(output, JSON.stringify(final.sort((a, b) => a.name.localeCompare(b.name)), null, 2), err => {
+      if (err) throw err
+    })
+  }
+})
