@@ -1,0 +1,5 @@
+#!/usr/bin/sed -f
+
+y/aioyuAIOYUbcdfghjklmnpqrstvBCDFGHJKLMNPQRSTVWXZeE /yuioayuioarstvkpbncqgdflmhjrstvkpbncqgdflmhjwxz  e/
+s/\.e/\. /g
+s/\,e/\, /g
