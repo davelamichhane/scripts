@@ -1,0 +1,9 @@
+#!/usr/bin/sed -f
+#y/anbocpdqerfsgthuivjwkxlymz/naobpcqdresftguhviwjxkylzm/
+#y/NAOBPCQDRESFTGUHVIWJXKYLZM/ANBOCPDQERFSGTHUIVJWKXLYMZ/
+
+y/yuioaYUIOArstvkpbncqgdflmhjRSTVKPBNCQGDFLMHJ e/aioyuAIOYUbcdfghjklmnpqrstvBCDFGHJKLMNPQRSTVe /
+s/\.e/\. /g
+s/\,e/\, /g
+s/\:e/\: /g
+
