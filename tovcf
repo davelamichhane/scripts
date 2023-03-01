@@ -1,0 +1,22 @@
+#!/usr/bin/node
+
+// This program will convert your address.json file to a vcard file
+// This file can be imported to an android device
+
+const fs = require("fs")
+const [input, output] = process.argv.slice(2)
+
+function jsonToVcf(inputFile, outputFile){
+  const data = fs.readFileSync(inputFile)
+  const jsonData = JSON.parse(data)
+
+  let vcf = ""
+  for(let i = 0; i < jsonData.length; i++){
+    const name = jsonData[i].name;
+    const number = jsonData[i].phone;
+    vcf += `BEGIN:VCARD\nVERSION:2.1\nFN:${name}\nTEL;TYPE=CELL:${number}\nEND:VCARD\n`
+  }
+  fs.writeFileSync(outputFile, vcf)
+}
+
+jsonToVcf(input,output)
