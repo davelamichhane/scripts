@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+# using this in my tmux statusline
+
+
+bat0=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/percentage/ {print $2}' | tr -d "%")
+bat0_state=$(upower -i /org/freedesktop/UPower/devices/battery_BAT0 | awk '/state/ {print $2}')
+bat1=$(upower -i /org/freedesktop/UPower/devices/battery_BAT1 | awk '/percentage/ {print $2}' | tr -d "%")
+bat1_state=$(upower -i /org/freedesktop/UPower/devices/battery_BAT1 | awk '/state/ {print $2}')
+
+average_percentage=$( echo "($bat0+$bat1) / 2" | bc)
+
+if [[ $bat1_state == 'charging' ]] || [[ $bat0_state == 'charging' ]]; then
+  state='+'
+  else
+  state="-"
+fi
+
+echo "$state$average_percentage%"
