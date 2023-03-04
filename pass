@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+# decrypt you gpg encrypted password file
+# copy password
+# shred file
+# delte file
+
+gpg -d -o $TMP_FILEPATH $PASSWORD_FILEPATH
+password=$(jq ".[] | select(.id==\"${1}\") | .password" $TMP_FILEPATH | tr -d '"')
+echo $password | xclip -selection clipboard 
+shred $TMP_FILEPATH
+rm $TMP_FILEPATH
