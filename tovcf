@@ -13,7 +13,7 @@ function jsonToVcf(inputFile, outputFile){
   let vcf = ""
   for(let i = 0; i < jsonData.length; i++){
     const name = jsonData[i].name;
-    const number = jsonData[i].phone;
+    const number = jsonData[i].number;
     vcf += `BEGIN:VCARD\nVERSION:2.1\nFN:${name}\nTEL;TYPE=CELL:${number}\nEND:VCARD\n`
   }
   fs.writeFileSync(outputFile, vcf)
