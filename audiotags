@@ -1,0 +1,50 @@
+#!/usr/bin/node
+
+// This script will extract info from folder/files names and add them as metadata to audio files
+// since these files are not tagged properly
+// Tried using GUI programs like puddletag, kid3, easytag etc. but they were not able to do it
+
+const { exec } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const folderName = process.argv[2];
+
+fs.readdir(folderName, (err, subFolders) => {
+  if (err) {
+    console.log(err);
+  } else {
+    subFolders.forEach((subFolder) => {
+      // extract info from folderName
+      const [artistName, year, albumName] = subFolder.split(" - ");
+
+      const subFolderPath = path.join(folderName, subFolder);
+      fs.readdir(subFolderPath, (err, files) => {
+        let count = 0;
+        if (err) {
+          console.log(err);
+          return;
+        } else {
+          files.forEach((file) => {
+            if (file.endsWith(".mp3")) {
+              const [trackNumber, trackNameMP3] = file.split(" - ");
+              const [trackName] = trackNameMP3.split(".");
+
+              const filePath = path.join(subFolderPath, file);
+              const command = `id3v2 -a "${artistName}" -A "${albumName}" -y "${year}" -t "${trackName}" -T "${trackNumber}" "${filePath}"`;
+              exec(command, (err, stdout, stderr) => {
+                if (err) {
+                  console.log(err);
+                } else if (stderr) {
+                  console.log(stderr);
+                } else {
+                  count++;
+                }
+              });
+            }
+          });
+          console.log(count);
+        }
+      });
+    });
+  }
+});
