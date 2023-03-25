@@ -1,0 +1,45 @@
+#!/usr/bin/node
+// this program will toggle the touchpad
+// bind it to a simple key combination (in my case super+o will toggle the touchpad)
+
+const { exec } = require("child_process");
+
+exec("xinput list | grep Synaptics", (err, stdout) => {
+  if (err) {
+    console.error(`exec error: ${err}`);
+    return;
+  }
+  const id = stdout.split("\t")[1].substring(3);
+  exec(
+    `xinput list-props ${id} | grep "Device Enabled" | awk '{print $NF}'`,
+    (err, stdout) => {
+      if (err) {
+        console.log(err);
+      }
+      const initial = Number(stdout);
+
+      if (initial === 1) {
+        // move mouse cursor to the side (1920, 540 from top-left) and then disable touchpad
+        exec(
+          ` xdotool mousemove 1920 540 && xinput set-prop ${id} "Device Enabled" 0`,
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      } else {
+        // enable touchpad, enable 'tap to click', and move mouse cursor to the side
+        exec(
+          `xinput set-prop ${id} "Device Enabled" 1 && xinput set-prop ${id} "libinput Tapping Enabled" 1 && xdotool mousemove 1920 540`,
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log("touchpad enabled");
+          }
+        );
+      }
+    }
+  );
+});
