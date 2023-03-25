@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+
+removed_packages=""
+while [ $(pacman -Qdtq | wc -l) -gt 0 ]
+  do
+    removed_packages="$removed_packages $(sudo pacman -Rns $(pacman -Qdtq))"
+  done
+
+  if [ -z $removed_packages ] ;then
+    echo "There weren't any orphaned packages to remove!"
+  else 
+    echo "The following orphaned pakaged were removed:"
+    echo $removed_packages
+  fi
+
+
+
+
