@@ -1,0 +1,123 @@
+#!/usr/bin/node
+
+const fs = require("fs");
+const readline = require("readline/promises");
+
+const args = process.argv.slice(2);
+const destFile = "/home/dave/Dump/jaambo/Jaambo/timeTracker.json";
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
+const possibleAnswers = ["y", "Y", "yes", "Yes", "YES"];
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+function uuid() {
+  const arr = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split("");
+  let uuid = "";
+  for (let i = 0; i < 4; i++) {
+    const index = Math.floor(Math.random() * 36);
+    uuid += arr[index];
+  }
+  return uuid;
+}
+
+async function questions(object, array) {
+  try {
+    object.task = await rl.question("Enter task: ");
+    const yesno = await rl.question("Do you want to add description? ");
+    if (possibleAnswers.includes(yesno)) {
+      object.desc = await rl.question("Enter description: ");
+    }
+    object.start = new Date().toLocaleString();
+    array.push(object);
+    fs.writeFile(destFile, JSON.stringify(array), (err) => {
+      if (err) throw new Error(err);
+      console.log(array[array.length - 1]);
+    });
+    rl.close();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// program starts here
+fs.readFile(destFile, "utf-8", (err, data) => {
+  if (err) {
+    console.log(err);
+  } else {
+    // if no error reading file, proceed
+    const arr = JSON.parse(data);
+    if (args[0] === "begin") {
+      // 'begin' argument
+      if (arr.length > 0 && !arr[arr.length - 1].end) {
+        console.log("There is already a timer running!");
+        process.exit();
+      } else {
+        const obj = { id: uuid() };
+        questions(obj, arr);
+      }
+    } else if (args[0] === "end") {
+      // 'end' argument
+      if (arr.length > 0 && arr[arr.length - 1].end) {
+        console.log("There isnt a timer running!");
+      } else {
+        obj = arr[arr.length - 1];
+        obj.end = new Date().toLocaleString();
+        fs.writeFile(destFile, JSON.stringify(arr), (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(arr[arr.length - 1]);
+          }
+        });
+      }
+    } else if (args[0] === "report") {
+      // 'report' argument
+      let total = 0
+      console.log(`Date\t\t\tTask\t\tDuration\tDescription`);
+      console.log('-------------------------------------------------------------------------------------------')
+      arr.forEach((obj) => {
+        const dayOfWeek = days[new Date(obj.start).getDay()];
+        const dayOfMonth = new Date(obj.start).getDate();
+        const month = months[new Date(obj.start).getMonth()];
+        const year = new Date(obj.start).getFullYear();
+        const date = `${dayOfWeek} ${dayOfMonth} ${month} ${year}`;
+        const duration = obj.end ? new Date(obj.end) - new Date(obj.start) : 0;
+        total += duration
+        const drationInHoursAndMinutes = duration
+          ? `${Math.floor(duration / 3600000)}:${Math.floor(
+              (duration % 3600000) / 60000
+            )} hrs`
+          : "ongoing";
+
+        // print report for each entry
+        console.log(
+          `${date}\t\t${obj.task}\t\t${drationInHoursAndMinutes}\t\t${obj.desc}`
+        );
+      });
+      console.log('-------------------------------------------------------------------------------------------')
+      console.log(`Total:\t\t\t\t\t${Math.floor(total / 3600000)}:${Math.floor((total % 3600000) / 60000)} hrs`)
+      process.exit();
+    } else {
+      // invalid argument
+      console.log("Invalid Arg...Go fuck yourself!");
+      process.exit();
+    }
+  }
+});
+
