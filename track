@@ -45,7 +45,7 @@ async function questions(object, array) {
     }
     object.start = new Date().toLocaleString();
     array.push(object);
-    fs.writeFile(destFile, JSON.stringify(array), (err) => {
+    fs.writeFile(destFile, JSON.stringify(array, null, 2), (err) => {
       if (err) throw new Error(err);
       console.log(array[array.length - 1]);
     });
@@ -75,21 +75,23 @@ fs.readFile(destFile, "utf-8", (err, data) => {
       // 'end' argument
       if (arr.length > 0 && arr[arr.length - 1].end) {
         console.log("There isnt a timer running!");
+        process.exit()
       } else {
         obj = arr[arr.length - 1];
         obj.end = new Date().toLocaleString();
-        fs.writeFile(destFile, JSON.stringify(arr), (err) => {
+        fs.writeFile(destFile, JSON.stringify(arr, null, 2), (err) => {
           if (err) {
             console.log(err);
           } else {
             console.log(arr[arr.length - 1]);
+            process.exit();
           }
         });
       }
     } else if (args[0] === "report") {
       // 'report' argument
       let total = 0
-      console.log(`Date\t\t\tTask\t\tDuration\tDescription`);
+      console.log(`Date\t\t\tTask\t\t\tDuration\tDescription`);
       console.log('-------------------------------------------------------------------------------------------')
       arr.forEach((obj) => {
         const dayOfWeek = days[new Date(obj.start).getDay()];
@@ -111,7 +113,7 @@ fs.readFile(destFile, "utf-8", (err, data) => {
         );
       });
       console.log('-------------------------------------------------------------------------------------------')
-      console.log(`Total:\t\t\t\t\t${Math.floor(total / 3600000)}:${Math.floor((total % 3600000) / 60000)} hrs`)
+      console.log(`Total: ${Math.floor(total / 3600000)}:${Math.floor((total % 3600000) / 60000)} hrs`)
       process.exit();
     } else {
       // invalid argument
